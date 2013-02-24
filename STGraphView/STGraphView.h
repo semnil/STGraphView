@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol STGraphViewDelegateProtocol
+@protocol STGraphViewDelegate
 @required
 - (int)numberOfValue;
 - (int)valueOfIndex:(int)index;

@@ -10,7 +10,7 @@
 
 #import "STGraphView.h"
 
-@interface STViewController : UIViewController<STGraphViewDelegateProtocol>
+@interface STViewController : UIViewController<STGraphViewDelegate>
 {
     NSArray *_graphValues;
 }
