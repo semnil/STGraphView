@@ -13,6 +13,9 @@
 @synthesize paddingWidth = _paddingWidth;
 @synthesize paddingHeight = _paddingHeight;
 
+@synthesize type = _type;
+@synthesize valueType = _valueType;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -21,6 +24,11 @@
         [self setBackgroundColor:[UIColor whiteColor]];
         _paddingWidth = 20.0f;
         _paddingHeight = 20.0f;
+        _lineWidth = 2.0f;
+        _axisLineWidth = 2.0f;
+        
+        _type = STGraphViewTypeLine;
+        _valueType = STGraphViewValueTypeNormal;
     }
     return self;
 }
@@ -28,18 +36,22 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    int i, num, value, max = 0;
+    int i, num, value = 0, max = 0;
     float scaling;
-    CGPoint points[32];
+    CGPoint *points;
+    NSMutableArray *values;
 
     rect = self.bounds;
 
     // get values
-    NSMutableArray *values = [NSMutableArray arrayWithCapacity:0];
     num = [_delegate numberOfValue];
-    //points = malloc(sizeof(CGPoint));
+    values = [NSMutableArray arrayWithCapacity:num];
+    points = (CGPoint *)calloc(sizeof(CGPoint), num);
     for (i = 0;i < num;i++) {
-        value = [_delegate valueOfIndex:i];
+        if (_valueType == STGraphViewValueTypeCumulative)
+            value += [_delegate valueOfIndex:i];
+        else
+            value = [_delegate valueOfIndex:i];
         [values addObject:[NSNumber numberWithInteger:value]];
         if (max < value)
             max = value;
@@ -64,42 +76,50 @@
     rect.size.height -= _paddingHeight * 2;
 
     // plot values
-    CGContextBeginPath(context);
-
-    CGContextMoveToPoint(context, rect.origin.x, rect.origin.y + rect.size.height);
-    for (i = 0;i < num;i++) {
-        value = [[values objectAtIndex:i] intValue];
-
-        points[i].x = rect.origin.x + rect.size.width / (num - 1) * i;
-        points[i].y = rect.origin.y + rect.size.height - (float)value * scaling;
-        CGContextAddLineToPoint(context, points[i].x, points[i].y);
+    switch (_type) {
+        case STGraphViewTypeLine:
+            CGContextBeginPath(context);
+            
+            CGContextMoveToPoint(context, rect.origin.x, rect.origin.y + rect.size.height);
+            for (i = 0;i < num;i++) {
+                value = [[values objectAtIndex:i] intValue];
+                
+                points[i].x = rect.origin.x + rect.size.width / (num - 1) * i;
+                points[i].y = rect.origin.y + rect.size.height - (float)value * scaling;
+                CGContextAddLineToPoint(context, points[i].x, points[i].y);
+            }
+            CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height);
+            CGContextClosePath(context);
+            CGContextSetFillColorWithColor(context, [_delegate fillColorOfValue].CGColor);
+            CGContextFillPath(context);
+            
+            // draw line
+            CGContextSetStrokeColorWithColor(context, [_delegate lineColorOfValue].CGColor);
+            
+            CGContextSetLineCap(context, kCGLineCapRound);
+            CGContextSetLineJoin(context, kCGLineJoinRound);
+            
+            CGContextBeginPath(context);
+            
+            CGContextSetLineWidth(context, _lineWidth);
+            points[0].x += _lineWidth / 2;
+            points[num - 1].x -= _lineWidth / 2;
+            CGContextAddLines(context, points, num);
+            CGContextStrokePath(context);
+            
+            // draw axis
+            CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0);
+            CGContextSetLineWidth(context, _axisLineWidth);
+            CGContextMoveToPoint(context, rect.origin.x, rect.origin.y);
+            CGContextAddLineToPoint(context, rect.origin.x, rect.origin.y + rect.size.height);
+            CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height);
+            CGContextStrokePath(context);
+            break;
+            
+        default:
+            break;
     }
-    CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height);
-    CGContextClosePath(context);
-    CGContextSetFillColorWithColor(context, [_delegate fillColorOfValue].CGColor);
-    CGContextFillPath(context);
-
-    // draw line
-    CGContextSetStrokeColorWithColor(context, [_delegate lineColorOfValue].CGColor);
-
-    CGContextSetLineCap(context, kCGLineCapRound);
-    CGContextSetLineJoin(context, kCGLineJoinRound);
-
-    CGContextBeginPath(context);
-
-    CGContextSetLineWidth(context, 3);
-    CGContextAddLines(context, points, num);
-    //free(points);
-    CGContextStrokePath(context);
-
-    // draw axis
-    CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 1.0);
-    CGContextSetLineWidth(context, 2);
-    CGContextMoveToPoint(context, rect.origin.x, rect.origin.y);
-    CGContextAddLineToPoint(context, rect.origin.x, rect.origin.y + rect.size.height);
-    CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height);
-    CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y);
-    CGContextStrokePath(context);
+    free(points);
 
     UIGraphicsEndImageContext();
 }
