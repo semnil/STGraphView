@@ -19,17 +19,18 @@
 		B2F693E816D9EAC400A8BF7A /* STViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F693E716D9EAC400A8BF7A /* STViewController.m */; };
 		B2F693EB16D9EAC400A8BF7A /* STViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2F693E916D9EAC400A8BF7A /* STViewController_iPhone.xib */; };
 		B2F693EE16D9EAC400A8BF7A /* STViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2F693EC16D9EAC400A8BF7A /* STViewController_iPad.xib */; };
+		B2F693FA16D9EED500A8BF7A /* STGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F693F916D9EED500A8BF7A /* STGraphView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B2F693CB16D9EAC400A8BF7A /* STGraphViewTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STGraphViewTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2F693CB16D9EAC400A8BF7A /* STGraphView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STGraphView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2F693CE16D9EAC400A8BF7A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B2F693D016D9EAC400A8BF7A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B2F693D216D9EAC400A8BF7A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		B2F693D616D9EAC400A8BF7A /* STGraphViewTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "STGraphViewTest-Info.plist"; sourceTree = "<group>"; };
+		B2F693D616D9EAC400A8BF7A /* STGraphView-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "STGraphView-Info.plist"; sourceTree = "<group>"; };
 		B2F693D816D9EAC400A8BF7A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B2F693DA16D9EAC400A8BF7A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		B2F693DC16D9EAC400A8BF7A /* STGraphViewTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "STGraphViewTest-Prefix.pch"; sourceTree = "<group>"; };
+		B2F693DC16D9EAC400A8BF7A /* STGraphView-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "STGraphView-Prefix.pch"; sourceTree = "<group>"; };
 		B2F693DD16D9EAC400A8BF7A /* STAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STAppDelegate.h; sourceTree = "<group>"; };
 		B2F693DE16D9EAC400A8BF7A /* STAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STAppDelegate.m; sourceTree = "<group>"; };
 		B2F693E016D9EAC400A8BF7A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -39,6 +40,8 @@
 		B2F693E716D9EAC400A8BF7A /* STViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STViewController.m; sourceTree = "<group>"; };
 		B2F693EA16D9EAC400A8BF7A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/STViewController_iPhone.xib; sourceTree = "<group>"; };
 		B2F693ED16D9EAC400A8BF7A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/STViewController_iPad.xib; sourceTree = "<group>"; };
+		B2F693F816D9EED500A8BF7A /* STGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STGraphView.h; path = STGraphView/STGraphView.h; sourceTree = "<group>"; };
+		B2F693F916D9EED500A8BF7A /* STGraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STGraphView.m; path = STGraphView/STGraphView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,7 @@
 		B2F693C216D9EAC400A8BF7A = {
 			isa = PBXGroup;
 			children = (
+				B2F693F716D9EEA300A8BF7A /* STGraphView */,
 				B2F693D416D9EAC400A8BF7A /* STGraphViewTest */,
 				B2F693CD16D9EAC400A8BF7A /* Frameworks */,
 				B2F693CC16D9EAC400A8BF7A /* Products */,
@@ -67,7 +71,7 @@
 		B2F693CC16D9EAC400A8BF7A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B2F693CB16D9EAC400A8BF7A /* STGraphViewTest.app */,
+				B2F693CB16D9EAC400A8BF7A /* STGraphView.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -99,10 +103,10 @@
 		B2F693D516D9EAC400A8BF7A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				B2F693D616D9EAC400A8BF7A /* STGraphViewTest-Info.plist */,
+				B2F693D616D9EAC400A8BF7A /* STGraphView-Info.plist */,
 				B2F693D716D9EAC400A8BF7A /* InfoPlist.strings */,
 				B2F693DA16D9EAC400A8BF7A /* main.m */,
-				B2F693DC16D9EAC400A8BF7A /* STGraphViewTest-Prefix.pch */,
+				B2F693DC16D9EAC400A8BF7A /* STGraphView-Prefix.pch */,
 				B2F693E016D9EAC400A8BF7A /* Default.png */,
 				B2F693E216D9EAC400A8BF7A /* Default@2x.png */,
 				B2F693E416D9EAC400A8BF7A /* Default-568h@2x.png */,
@@ -110,12 +114,21 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		B2F693F716D9EEA300A8BF7A /* STGraphView */ = {
+			isa = PBXGroup;
+			children = (
+				B2F693F816D9EED500A8BF7A /* STGraphView.h */,
+				B2F693F916D9EED500A8BF7A /* STGraphView.m */,
+			);
+			name = STGraphView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B2F693CA16D9EAC400A8BF7A /* STGraphViewTest */ = {
+		B2F693CA16D9EAC400A8BF7A /* STGraphView */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B2F693F116D9EAC400A8BF7A /* Build configuration list for PBXNativeTarget "STGraphViewTest" */;
+			buildConfigurationList = B2F693F116D9EAC400A8BF7A /* Build configuration list for PBXNativeTarget "STGraphView" */;
 			buildPhases = (
 				B2F693C716D9EAC400A8BF7A /* Sources */,
 				B2F693C816D9EAC400A8BF7A /* Frameworks */,
@@ -125,9 +138,9 @@
 			);
 			dependencies = (
 			);
-			name = STGraphViewTest;
+			name = STGraphView;
 			productName = STGraphViewTest;
-			productReference = B2F693CB16D9EAC400A8BF7A /* STGraphViewTest.app */;
+			productReference = B2F693CB16D9EAC400A8BF7A /* STGraphView.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -140,7 +153,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Shinone Tetsuya";
 			};
-			buildConfigurationList = B2F693C616D9EAC400A8BF7A /* Build configuration list for PBXProject "STGraphViewTest" */;
+			buildConfigurationList = B2F693C616D9EAC400A8BF7A /* Build configuration list for PBXProject "STGraphView" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -152,7 +165,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B2F693CA16D9EAC400A8BF7A /* STGraphViewTest */,
+				B2F693CA16D9EAC400A8BF7A /* STGraphView */,
 			);
 		};
 /* End PBXProject section */
@@ -181,6 +194,7 @@
 				B2F693DB16D9EAC400A8BF7A /* main.m in Sources */,
 				B2F693DF16D9EAC400A8BF7A /* STAppDelegate.m in Sources */,
 				B2F693E816D9EAC400A8BF7A /* STViewController.m in Sources */,
+				B2F693FA16D9EED500A8BF7A /* STGraphView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,9 +288,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "STGraphViewTest/STGraphViewTest-Prefix.pch";
-				INFOPLIST_FILE = "STGraphViewTest/STGraphViewTest-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "STGraphViewTest/STGraphView-Prefix.pch";
+				INFOPLIST_FILE = "STGraphViewTest/STGraphView-Info.plist";
+				PRODUCT_NAME = STGraphView;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -285,9 +299,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "STGraphViewTest/STGraphViewTest-Prefix.pch";
-				INFOPLIST_FILE = "STGraphViewTest/STGraphViewTest-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "STGraphViewTest/STGraphView-Prefix.pch";
+				INFOPLIST_FILE = "STGraphViewTest/STGraphView-Info.plist";
+				PRODUCT_NAME = STGraphView;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -295,7 +309,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B2F693C616D9EAC400A8BF7A /* Build configuration list for PBXProject "STGraphViewTest" */ = {
+		B2F693C616D9EAC400A8BF7A /* Build configuration list for PBXProject "STGraphView" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B2F693EF16D9EAC400A8BF7A /* Debug */,
@@ -304,7 +318,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B2F693F116D9EAC400A8BF7A /* Build configuration list for PBXNativeTarget "STGraphViewTest" */ = {
+		B2F693F116D9EAC400A8BF7A /* Build configuration list for PBXNativeTarget "STGraphView" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B2F693F216D9EAC400A8BF7A /* Debug */,

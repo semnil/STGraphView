@@ -3,10 +3,11 @@
 //  STGraphViewTest
 //
 //  Created by Shinone Tetsuya on 2013/02/24.
-//  Copyright (c) 2013年 Shinone Tetsuya. All rights reserved.
+//  Copyright (c) 2013 Shinone Tetsuya. All rights reserved.
 //
 
 #import "STViewController.h"
+#import "STGraphView.h"
 
 @interface STViewController ()
 
@@ -17,13 +18,54 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+
+    _graphValues = [[NSArray alloc]
+            initWithObjects:[NSNumber numberWithInteger:1],
+                    [NSNumber numberWithInteger:3],
+                    [NSNumber numberWithInteger:5],
+                    [NSNumber numberWithInteger:2],
+                    [NSNumber numberWithInteger:7],
+                    [NSNumber numberWithInteger:3],
+                    nil];
+
+    STGraphView *graphView = [[[STGraphView alloc] initWithFrame:CGRectMake(0, 50, 320, 250)] autorelease];
+    [graphView setDelegate:self];
+    [self.view addSubview:graphView];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    if (_graphValues != nil)
+        [_graphValues release];
+
+    [super dealloc];
+}
+
+#pragma mark - STGraphView delegate
+
+- (int)numberOfValue
+{
+    return [_graphValues count];
+}
+- (int)valueOfIndex:(int)index
+{
+    return [[_graphValues objectAtIndex:index] intValue];
+}
+
+- (UIColor *)lineColorOfValue
+{
+    return [UIColor blueColor];
+}
+
+- (UIColor *)fillColorOfValue
+{
+    return [UIColor colorWithRed:0.5 green:0.5 blue:1 alpha:0.6];
 }
 
 @end
