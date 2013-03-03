@@ -30,7 +30,7 @@
     // Drawing code
     int i, num, value, max = 0;
     float scaling;
-    CGPoint points[32];
+    CGPoint points[64];
 
     rect = self.bounds;
 

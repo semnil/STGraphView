@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B2F2000A16E3676100DA8BBA /* STGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F2000916E3676100DA8BBA /* STGraphView.m */; };
 		B2F693CF16D9EAC400A8BF7A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F693CE16D9EAC400A8BF7A /* UIKit.framework */; };
 		B2F693D116D9EAC400A8BF7A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F693D016D9EAC400A8BF7A /* Foundation.framework */; };
 		B2F693D316D9EAC400A8BF7A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2F693D216D9EAC400A8BF7A /* CoreGraphics.framework */; };
@@ -19,10 +20,11 @@
 		B2F693E816D9EAC400A8BF7A /* STViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F693E716D9EAC400A8BF7A /* STViewController.m */; };
 		B2F693EB16D9EAC400A8BF7A /* STViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2F693E916D9EAC400A8BF7A /* STViewController_iPhone.xib */; };
 		B2F693EE16D9EAC400A8BF7A /* STViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = B2F693EC16D9EAC400A8BF7A /* STViewController_iPad.xib */; };
-		B2F693FA16D9EED500A8BF7A /* STGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2F693F916D9EED500A8BF7A /* STGraphView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B2F2000816E3676100DA8BBA /* STGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STGraphView.h; sourceTree = "<group>"; };
+		B2F2000916E3676100DA8BBA /* STGraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STGraphView.m; sourceTree = "<group>"; };
 		B2F693CB16D9EAC400A8BF7A /* STGraphView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STGraphView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2F693CE16D9EAC400A8BF7A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B2F693D016D9EAC400A8BF7A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -40,8 +42,6 @@
 		B2F693E716D9EAC400A8BF7A /* STViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = STViewController.m; sourceTree = "<group>"; };
 		B2F693EA16D9EAC400A8BF7A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/STViewController_iPhone.xib; sourceTree = "<group>"; };
 		B2F693ED16D9EAC400A8BF7A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/STViewController_iPad.xib; sourceTree = "<group>"; };
-		B2F693F816D9EED500A8BF7A /* STGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STGraphView.h; path = STGraphView/STGraphView.h; sourceTree = "<group>"; };
-		B2F693F916D9EED500A8BF7A /* STGraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STGraphView.m; path = STGraphView/STGraphView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,8 +117,8 @@
 		B2F693F716D9EEA300A8BF7A /* STGraphView */ = {
 			isa = PBXGroup;
 			children = (
-				B2F693F816D9EED500A8BF7A /* STGraphView.h */,
-				B2F693F916D9EED500A8BF7A /* STGraphView.m */,
+				B2F2000816E3676100DA8BBA /* STGraphView.h */,
+				B2F2000916E3676100DA8BBA /* STGraphView.m */,
 			);
 			name = STGraphView;
 			sourceTree = "<group>";
@@ -194,7 +194,7 @@
 				B2F693DB16D9EAC400A8BF7A /* main.m in Sources */,
 				B2F693DF16D9EAC400A8BF7A /* STAppDelegate.m in Sources */,
 				B2F693E816D9EAC400A8BF7A /* STViewController.m in Sources */,
-				B2F693FA16D9EED500A8BF7A /* STGraphView.m in Sources */,
+				B2F2000A16E3676100DA8BBA /* STGraphView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,6 +325,7 @@
 				B2F693F316D9EAC400A8BF7A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

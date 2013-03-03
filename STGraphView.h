@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol STGraphViewDelegateProtocol
+@protocol STGraphViewDelegate
 @required
 - (int)numberOfValue;
 - (int)valueOfIndex:(int)index;
@@ -24,7 +24,7 @@
     float _paddingHeight;
 }
 
-@property (assign, nonatomic) id delegate;
+@property (assign, nonatomic) id <STGraphViewDelegate>delegate;
 @property (assign, nonatomic) float paddingWidth;
 @property (assign, nonatomic) float paddingHeight;
 
