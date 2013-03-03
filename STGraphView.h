@@ -8,20 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define MAX_GRAPH_PLOT_POINTS 32
-
-typedef enum STGraphViewType : NSInteger {
-    STGraphViewTypeLine,
-    STGraphViewTypeBar,
-    STGraphViewTypePie
-} STGraphViewType;
-
-typedef enum STGraphViewValueType : NSInteger {
-    STGraphViewValueTypeNormal,
-    STGraphViewValueTypeCumulative
-} STGraphViewValueType;
-
-@protocol STGraphViewDelegate
+@protocol STGraphViewDelegateProtocol
 @required
 - (int)numberOfValue;
 - (int)valueOfIndex:(int)index;
@@ -35,19 +22,11 @@ typedef enum STGraphViewValueType : NSInteger {
     id _delegate;
     float _paddingWidth;
     float _paddingHeight;
-    float _lineWidth;
-    float _axisLineWidth;
-    
-    int _type;
-    int _valueType;
 }
 
 @property (assign, nonatomic) id delegate;
 @property (assign, nonatomic) float paddingWidth;
 @property (assign, nonatomic) float paddingHeight;
-
-@property (assign, nonatomic) int type;
-@property (assign, nonatomic) int valueType;
 
 - (void)setPaddingWithWidth:(float)width height:(float)height;
 
