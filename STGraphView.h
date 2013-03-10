@@ -8,10 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum STGraphViewType : NSInteger {
+    STGraphViewTypeLine,
+    STGraphViewTypeBar,
+    STGraphViewTypePie
+} STGraphViewType;
+
+typedef enum STGraphViewMode : NSInteger {
+    STGraphViewModeNormal,
+    STGraphViewModeCumulative
+} STGraphViewMode;
+
 @protocol STGraphViewDelegate
 @required
 - (int)numberOfValue;
-- (int)valueOfIndex:(int)index;
+- (float)valueOfIndex:(int)index;
 - (UIColor *)lineColorOfValue;
 - (UIColor *)fillColorOfValue;
 @optional
@@ -20,13 +31,25 @@
 @interface STGraphView : UIView
 {
     id _delegate;
-    float _paddingWidth;
-    float _paddingHeight;
+    int _graphType;
+    int _graphMode;
+    float _borderWidth;
+    // Line graph parameters
+    float _lineWidth;
+    float _labelWidth;
+    
+    float _paddingLeft;
+    float _paddingRight;
+    float _paddingTop;
+    float _paddingBottom;
 }
 
 @property (assign, nonatomic) id <STGraphViewDelegate>delegate;
-@property (assign, nonatomic) float paddingWidth;
-@property (assign, nonatomic) float paddingHeight;
+@property (assign, nonatomic) int graphType;
+@property (assign, nonatomic) float paddingLeft;
+@property (assign, nonatomic) float paddingRight;
+@property (assign, nonatomic) float paddingTop;
+@property (assign, nonatomic) float paddingBottom;
 
 - (void)setPaddingWithWidth:(float)width height:(float)height;
 
