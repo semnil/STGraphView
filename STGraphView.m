@@ -125,11 +125,11 @@
             // draw max label
             CGContextSetFillColorWithColor(context, [UIColor blackColor].CGColor);
             CGContextSelectFont(context, "Helvetica", 10, kCGEncodingMacRoman);
-            CGContextSetTextDrawingMode(context, kCGTextFillStroke);
+            CGContextSetTextDrawingMode(context, kCGTextFill);
             CGAffineTransform affine = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);
             CGContextSetTextMatrix(context, affine);
             snprintf(labelString, sizeof(labelString) - 1, "%.0f", max);
-            CGContextShowTextAtPoint(context, rect.origin.x + rect.size.width + _paddingRight + _borderWidth * 2,
+            CGContextShowTextAtPoint(context, rect.origin.x + rect.size.width + _paddingRight,
                                     rect.origin.y + rect.size.height * 0.1, labelString, strlen(labelString));
             break;
             
