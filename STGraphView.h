@@ -42,6 +42,8 @@ typedef enum STGraphViewMode : NSInteger {
     float _paddingRight;
     float _paddingTop;
     float _paddingBottom;
+    
+    NSString *_unitSring;
 }
 
 @property (assign, nonatomic) id <STGraphViewDelegate>delegate;
@@ -50,6 +52,7 @@ typedef enum STGraphViewMode : NSInteger {
 @property (assign, nonatomic) float paddingRight;
 @property (assign, nonatomic) float paddingTop;
 @property (assign, nonatomic) float paddingBottom;
+@property (retain, nonatomic) NSString *unitSring;
 
 - (void)setPaddingWithWidth:(float)width height:(float)height;
 

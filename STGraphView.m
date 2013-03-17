@@ -15,6 +15,15 @@
 @synthesize paddingRight = _paddingRight;
 @synthesize paddingTop = _paddingTop;
 @synthesize paddingBottom = _paddingBottom;
+@synthesize unitSring = _unitSring;
+
+- (void)dealloc
+{
+    if (_unitSring)
+        [_unitSring release];
+    _unitSring = nil;
+    [super dealloc];
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -31,6 +40,7 @@
         _paddingRight = 5.0f;
         _paddingTop = 5.f;
         _paddingBottom = 5.0f;
+        _unitSring = @"";
     }
     return self;
 }
@@ -130,7 +140,11 @@
             CGContextSetTextMatrix(context, affine);
             snprintf(labelString, sizeof(labelString) - 1, "%.0f", max);
             CGContextShowTextAtPoint(context, rect.origin.x + rect.size.width + _paddingRight,
-                                    rect.origin.y + rect.size.height * 0.1, labelString, strlen(labelString));
+                                    rect.origin.y + _paddingTop + rect.size.height * 0.1, labelString, strlen(labelString));
+            
+            // draw unit label
+            UIFont *font = [UIFont fontWithName:@"HiraKakuProN-W3" size:10.0f];
+            [[NSString stringWithFormat:@"[%@]", _unitSring] drawAtPoint:CGPointMake(rect.origin.x + rect.size.width + _paddingRight, _paddingTop) withFont:font];
             break;
             
         default:
