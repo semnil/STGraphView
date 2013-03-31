@@ -1,3 +1,6 @@
+![ScreenShot](https://raw.github.com/semnil/STGraphView/master/img/screen01.png)
+![ScreenShot](https://raw.github.com/semnil/STGraphView/master/img/screen02.png)
+
 STGraphView is a class of drawing graph for the objective-c(iOS) licensed under Apache License 2.0.
 
 LICENSE-2.0.txt                         : the terms of license of this software
