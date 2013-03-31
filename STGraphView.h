@@ -48,6 +48,7 @@ typedef enum STGraphViewMode : NSInteger {
 
 @property (assign, nonatomic) id <STGraphViewDelegate>delegate;
 @property (assign, nonatomic) int graphType;
+@property (assign, nonatomic) int graphMode;
 @property (assign, nonatomic) float paddingLeft;
 @property (assign, nonatomic) float paddingRight;
 @property (assign, nonatomic) float paddingTop;

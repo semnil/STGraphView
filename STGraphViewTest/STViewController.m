@@ -22,8 +22,8 @@
     _graphValues = [[NSArray alloc]
             initWithObjects:[NSNumber numberWithInteger:1],
                     [NSNumber numberWithInteger:3],
-                    [NSNumber numberWithInteger:50],
-                    [NSNumber numberWithInteger:2],
+                    [NSNumber numberWithInteger:5],
+                    /*[NSNumber numberWithInteger:2],
                     [NSNumber numberWithInteger:70],
                     [NSNumber numberWithInteger:3],
                     [NSNumber numberWithInteger:3],
@@ -75,11 +75,14 @@
                     [NSNumber numberWithInteger:5],
                     [NSNumber numberWithInteger:2],
                     [NSNumber numberWithInteger:7],
-                    [NSNumber numberWithInteger:3],
+                    [NSNumber numberWithInteger:3],*/
                     nil];
 
     STGraphView *graphView = [[[STGraphView alloc] initWithFrame:CGRectMake(0, 50, 320, 250)] autorelease];
     [graphView setDelegate:self];
+    [graphView setGraphMode:STGraphViewModeNormal];
+    [graphView setGraphType:STGraphViewTypeBar];
+    [graphView setUnitSring:@"sec(s)"];
     [self.view addSubview:graphView];
 }
 
