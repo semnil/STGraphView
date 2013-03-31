@@ -6,8 +6,8 @@ License
 ------------
 STGraphView is a class of drawing graph for the objective-c(iOS) licensed under Apache License 2.0.
 
-LICENSE-2.0.txt                         : the terms of license of this software
-STGraphView.h, STGraphView.m            : core component
+LICENSE-2.0.txt                         : the terms of license of this software<br/>
+STGraphView.h, STGraphView.m            : core component<br/>
 STGraphViewTest and other source codes  : example of use
 
 
