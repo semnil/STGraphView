@@ -57,7 +57,9 @@
     NSString *unitLabelString = [NSString stringWithFormat:@"[%@]", _unitSring];
     UIFont *font = [UIFont fontWithName:@"HiraKakuProN-W3" size:10.0f];
     CGSize boundingSize = CGSizeMake(100, 20);
-    _labelWidth = [unitLabelString sizeWithFont:font constrainedToSize:boundingSize lineBreakMode:NSLineBreakByWordWrapping].width;
+    float unitLabelWidth = [unitLabelString sizeWithFont:font constrainedToSize:boundingSize lineBreakMode:NSLineBreakByWordWrapping].width;
+    if (unitLabelWidth > _labelWidth)
+        _labelWidth = unitLabelWidth;
 
     rect = self.bounds;
 
@@ -74,6 +76,11 @@
             max = value;
     }
     scaling = (rect.size.height - _paddingTop - _paddingBottom) / max * 0.9f;
+    NSString *maxLabelString = [NSString stringWithFormat:@"%.0f", max];
+    font = [UIFont fontWithName:@"Helvetica" size:10.0f];
+    float maxLabelWidth = [maxLabelString sizeWithFont:font constrainedToSize:boundingSize lineBreakMode:NSLineBreakByWordWrapping].width;
+    if (maxLabelWidth > _labelWidth)
+        _labelWidth = maxLabelWidth;
 
     // draw
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -133,8 +140,10 @@
             points = calloc(sizeof(CGPoint), 4);
             for (i = 0;i < num;i++) {
                 value = [[values objectAtIndex:i] intValue];
+                if (value == 0)
+                    continue;
                 
-                points[0].y = rect.origin.y + rect.size.height - _lineWidth / 2;
+                points[0].y = rect.origin.y + rect.size.height;
                 points[3].y = points[0].y;
                 points[1].y = rect.origin.y + rect.size.height - (float)value * scaling;
                 points[2].y = points[1].y;
@@ -160,6 +169,11 @@
                 CGContextSetLineJoin(context, kCGLineJoinRound);
                 
                 CGContextBeginPath(context);
+                
+                points[0].y -= _lineWidth / 2;
+                points[3].y = points[0].y;
+                points[1].y -= _lineWidth / 2;
+                points[2].y = points[1].y;
                 
                 CGContextSetLineWidth(context, _lineWidth);
                 CGContextAddLines(context, points, 4);
