@@ -36,11 +36,12 @@
         _borderWidth = 1.0f;
         _lineWidth = 2.0f;
         _labelWidth = 30.0f;
-        [self setBackgroundColor:[UIColor whiteColor]];
+        [self setBackgroundColor:[UIColor colorWithWhite:247/255.0 alpha:1.0]];
         _paddingLeft = 5.0f;
         _paddingRight = 5.0f;
         _paddingTop = 5.f;
         _paddingBottom = 5.0f;
+        _labelTextSize = 12;
         _unitSring = @"";
     }
     return self;
@@ -49,13 +50,13 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    int i, num;
-    float value = 0, max = 0;
+    int i, j, num;
+    float value, max = 0;
     float scaling;
-    CGPoint *points;
+    CGPoint *basePoints, *points;
     char labelString[256];
     NSString *unitLabelString = [NSString stringWithFormat:@"[%@]", _unitSring];
-    UIFont *font = [UIFont fontWithName:@"HiraKakuProN-W3" size:10.0f];
+    UIFont *font = [UIFont fontWithName:@"HiraKakuProN-W3" size:_labelTextSize];
     CGSize boundingSize = CGSizeMake(100, 20);
     float unitLabelWidth = [unitLabelString sizeWithFont:font constrainedToSize:boundingSize lineBreakMode:NSLineBreakByWordWrapping].width;
     if (unitLabelWidth > _labelWidth)
@@ -64,20 +65,42 @@
     rect = self.bounds;
 
     // get values
-    NSMutableArray *values = [NSMutableArray arrayWithCapacity:0];
-    num = [_delegate numberOfValue];
+    num = [_delegate numberOfSource];
+    NSMutableArray *sources = [NSMutableArray arrayWithCapacity:num];
     for (i = 0;i < num;i++) {
-        if (_graphMode == STGraphViewModeNormal)
-            value = [_delegate valueOfIndex:i];
-        else
-            value += [_delegate valueOfIndex:i];
-        [values addObject:[NSNumber numberWithInteger:value]];
-        if (max < value)
-            max = value;
+        NSMutableArray *values = [NSMutableArray arrayWithCapacity:[_delegate numberOfValueWithSource:i]];
+        value = 0;
+        for (j = 0;j < [_delegate numberOfValueWithSource:i];j++) {
+            if (_graphMode == STGraphViewModeCumulative || _graphMode == STGraphViewModeCumulativeAll)
+                value += [_delegate valueOfIndex:j withSource:i];   // value level cumulation
+            else
+                value = [_delegate valueOfIndex:j withSource:i];
+            [values addObject:[NSNumber numberWithInteger:value]];
+            if (max < value)
+                max = value;
+        }
+        [sources addObject:values];
     }
+    if (_graphMode == STGraphViewModeCumulativeAll) {
+        // source level cumulation
+        for (i = 0;i < [sources count] - 1;i++) {
+            NSArray *base = [sources objectAtIndex:i];
+            NSMutableArray *dest = [sources objectAtIndex:i + 1];
+            for (j = 0;j < [dest count];j++) {
+                if ([base count] <= j)
+                    break;
+                value = [(NSNumber *)[base objectAtIndex:j] floatValue] + [(NSNumber *)[dest objectAtIndex:j] floatValue];
+                [dest replaceObjectAtIndex:j withObject:[NSNumber numberWithFloat:value]];
+                if (max < value)
+                    max = value;
+            }
+        }
+    }
+    
+    // size to fit
     scaling = (rect.size.height - _paddingTop - _paddingBottom) / max * 0.9f;
     NSString *maxLabelString = [NSString stringWithFormat:@"%.0f", max];
-    font = [UIFont fontWithName:@"Helvetica" size:10.0f];
+    font = [UIFont fontWithName:@"Helvetica" size:_labelTextSize];
     float maxLabelWidth = [maxLabelString sizeWithFont:font constrainedToSize:boundingSize lineBreakMode:NSLineBreakByWordWrapping].width;
     if (maxLabelWidth > _labelWidth)
         _labelWidth = maxLabelWidth;
@@ -104,82 +127,110 @@
 
     switch (_graphType) {
         case STGraphViewTypeLine:
-            CGContextMoveToPoint(context, rect.origin.x, rect.origin.y + rect.size.height);
-            points = calloc(sizeof(CGPoint), num);
-            for (i = 0;i < num;i++) {
-                value = [[values objectAtIndex:i] intValue];
-                
-                points[i].x = rect.origin.x + rect.size.width / (num - 1) * i;
-                if (i == 0)
-                    points[i].x += _lineWidth / 2;
-                else if (i == num - 1)
-                    points[i].x -= _lineWidth / 2;
-                points[i].y = rect.origin.y + rect.size.height - (float)value * scaling;
-                CGContextAddLineToPoint(context, points[i].x, points[i].y);
+            i = 0;
+            num = [_delegate numberOfValueWithSource:0];
+            basePoints = calloc(sizeof(CGPoint), num);
+            for (j = 0;j < num;j++) {
+                basePoints[j].x = rect.origin.x + rect.size.width / (num - 1) * j;
+                basePoints[j].y = rect.origin.y + rect.size.height;
             }
-            CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height);
-            CGContextClosePath(context);
-            CGContextSetFillColorWithColor(context, [_delegate fillColorOfValue].CGColor);
-            CGContextFillPath(context);
-            
-            // draw line
-            CGContextSetStrokeColorWithColor(context, [_delegate lineColorOfValue].CGColor);
-            
-            CGContextSetLineCap(context, kCGLineCapRound);
-            CGContextSetLineJoin(context, kCGLineJoinRound);
-            
-            CGContextBeginPath(context);
-            
-            CGContextSetLineWidth(context, _lineWidth);
-            CGContextAddLines(context, points, num);
-            free(points);
-            CGContextStrokePath(context);
-            break;
-            
-        case STGraphViewTypeBar:
-            points = calloc(sizeof(CGPoint), 4);
-            for (i = 0;i < num;i++) {
-                value = [[values objectAtIndex:i] intValue];
-                if (value == 0)
-                    continue;
-                
-                points[0].y = rect.origin.y + rect.size.height;
-                points[3].y = points[0].y;
-                points[1].y = rect.origin.y + rect.size.height - (float)value * scaling;
-                points[2].y = points[1].y;
-                
-                points[0].x = rect.origin.x + rect.size.width / (num * 2 + 1) * (i * 2 + 1);
-                points[1].x = points[0].x;
-                points[2].x = rect.origin.x + rect.size.width / (num * 2 + 1) * (i * 2 + 2);
-                points[3].x = points[2].x;
-                
-                CGContextMoveToPoint(context, points[0].x, points[0].y);
-                CGContextAddLineToPoint(context, points[1].x, points[1].y);
-                CGContextAddLineToPoint(context, points[2].x, points[2].y);
-                CGContextAddLineToPoint(context, points[3].x, points[3].y);
-                
+            for (NSArray *values in sources) {
+                CGContextMoveToPoint(context, rect.origin.x, basePoints[0].y);
+                points = calloc(sizeof(CGPoint), num);
+                for (j = 0;j < num;j++) {
+                    value = [[values objectAtIndex:j] intValue];
+                    
+                    points[j].x = basePoints[j].x;
+                    if (j == 0)
+                        points[j].x += _lineWidth / 2;
+                    else if (j == num - 1)
+                        points[j].x -= _lineWidth / 2;
+                    points[j].y = rect.origin.y + rect.size.height - (float)value * scaling;
+                    CGContextAddLineToPoint(context, points[j].x, points[j].y);
+                }
+                // fill rect
+                for (j = num - 1;j >= 0;j--)
+                    CGContextAddLineToPoint(context, basePoints[j].x, basePoints[j].y);
                 CGContextClosePath(context);
-                CGContextSetFillColorWithColor(context, [_delegate fillColorOfValue].CGColor);
+                CGContextSetFillColorWithColor(context, [_delegate fillColorOfValueWithSource:i].CGColor);
                 CGContextFillPath(context);
                 
                 // draw line
-                CGContextSetStrokeColorWithColor(context, [_delegate lineColorOfValue].CGColor);
+                CGContextSetStrokeColorWithColor(context, [_delegate lineColorOfValueWithSource:i].CGColor);
                 
                 CGContextSetLineCap(context, kCGLineCapRound);
                 CGContextSetLineJoin(context, kCGLineJoinRound);
                 
                 CGContextBeginPath(context);
                 
-                points[0].y -= _lineWidth / 2;
-                points[3].y = points[0].y;
-                points[1].y -= _lineWidth / 2;
-                points[2].y = points[1].y;
-                
                 CGContextSetLineWidth(context, _lineWidth);
-                CGContextAddLines(context, points, 4);
+                CGContextAddLines(context, points, num);
                 CGContextStrokePath(context);
+                
+                // reflesh base points
+                for (j = 0;j < num;j++)
+                    basePoints[j].y = points[j].y;
+                free(points);
+                i++;
             }
-            free(points);
+            free(basePoints);
+            break;
+            
+        case STGraphViewTypeBar:
+            i = 0;
+            for (NSArray *values in sources) {
+                basePoints = calloc(sizeof(CGPoint), 1);
+                //basePoints[0].x = 0; // not for use
+                basePoints[0].y = rect.origin.y + rect.size.height;
+                points = calloc(sizeof(CGPoint), 4);
+                for (j = 0;j < [values count];j++) {
+                    value = [[values objectAtIndex:j] intValue];
+                    if (value == 0)
+                        continue;
+                    
+                    points[0].y = basePoints[0].y;
+                    points[3].y = points[0].y;
+                    points[1].y = rect.origin.y + rect.size.height - (float)value * scaling;
+                    points[2].y = points[1].y;
+                    
+                    points[0].x = rect.origin.x + rect.size.width / (num * 2 + 1) * (i * 2 + 1);
+                    points[1].x = points[0].x;
+                    points[2].x = rect.origin.x + rect.size.width / (num * 2 + 1) * (i * 2 + 2);
+                    points[3].x = points[2].x;
+                    
+                    CGContextMoveToPoint(context, points[0].x, points[0].y);
+                    CGContextAddLineToPoint(context, points[1].x, points[1].y);
+                    CGContextAddLineToPoint(context, points[2].x, points[2].y);
+                    CGContextAddLineToPoint(context, points[3].x, points[3].y);
+                    
+                    CGContextClosePath(context);
+                    CGContextSetFillColorWithColor(context, [_delegate fillColorOfValueWithSource:i].CGColor);
+                    CGContextFillPath(context);
+                    
+                    // draw line
+                    CGContextSetStrokeColorWithColor(context, [_delegate lineColorOfValueWithSource:i].CGColor);
+                    
+                    CGContextSetLineCap(context, kCGLineCapRound);
+                    CGContextSetLineJoin(context, kCGLineJoinRound);
+                    
+                    CGContextBeginPath(context);
+                    
+                    points[0].y -= _lineWidth / 2;
+                    points[3].y = points[0].y;
+                    points[1].y -= _lineWidth / 2;
+                    points[2].y = points[1].y;
+                    
+                    CGContextSetLineWidth(context, _lineWidth);
+                    CGContextAddLines(context, points, 4);
+                    CGContextStrokePath(context);
+                    
+                    // reflesh base points
+                    basePoints[0].y = points[1].y;
+                }
+                free(points);
+                free(basePoints);
+                i++;
+            }
             break;
             
         default:
@@ -197,7 +248,7 @@
     
     // draw max label
     CGContextSetFillColorWithColor(context, [UIColor blackColor].CGColor);
-    CGContextSelectFont(context, "Helvetica", 10, kCGEncodingMacRoman);
+    CGContextSelectFont(context, "Helvetica", _labelTextSize, kCGEncodingMacRoman);
     CGContextSetTextDrawingMode(context, kCGTextFill);
     CGAffineTransform affine = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);
     CGContextSetTextMatrix(context, affine);
@@ -206,7 +257,7 @@
                              rect.origin.y + _paddingTop + rect.size.height * 0.1, labelString, strlen(labelString));
     
     // draw unit label
-    [unitLabelString drawAtPoint:CGPointMake(rect.origin.x + rect.size.width + _lineWidth * 2, _paddingTop) withFont:font];
+    [unitLabelString drawAtPoint:CGPointMake(rect.origin.x + rect.size.width + _lineWidth * 2, _paddingTop / 2) withFont:font];
 
     UIGraphicsEndImageContext();
 }

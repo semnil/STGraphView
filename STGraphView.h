@@ -16,15 +16,17 @@ typedef enum STGraphViewType : NSInteger {
 
 typedef enum STGraphViewMode : NSInteger {
     STGraphViewModeNormal,
-    STGraphViewModeCumulative
+    STGraphViewModeCumulative,      // value level cumulation
+    STGraphViewModeCumulativeAll    // source level cumulation
 } STGraphViewMode;
 
 @protocol STGraphViewDelegate
 @required
-- (int)numberOfValue;
-- (float)valueOfIndex:(int)index;
-- (UIColor *)lineColorOfValue;
-- (UIColor *)fillColorOfValue;
+- (int)numberOfSource;
+- (int)numberOfValueWithSource:(int)source;
+- (float)valueOfIndex:(int)index withSource:(int)source;
+- (UIColor *)lineColorOfValueWithSource:(int)source;
+- (UIColor *)fillColorOfValueWithSource:(int)source;
 @optional
 @end
 
@@ -42,6 +44,8 @@ typedef enum STGraphViewMode : NSInteger {
     float _paddingRight;
     float _paddingTop;
     float _paddingBottom;
+    
+    float _labelTextSize;
     
     NSString *_unitSring;
 }
