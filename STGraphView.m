@@ -16,10 +16,14 @@
 @synthesize paddingRight = _paddingRight;
 @synthesize paddingTop = _paddingTop;
 @synthesize paddingBottom = _paddingBottom;
+@synthesize labelTextFontName = _labelTextFontName;
 @synthesize unitSring = _unitSring;
 
 - (void)dealloc
 {
+    if (_labelTextFontName)
+        [_labelTextFontName release];
+    _labelTextFontName = nil;
     if (_unitSring)
         [_unitSring release];
     _unitSring = nil;
@@ -42,6 +46,7 @@
         _paddingTop = 5.f;
         _paddingBottom = 5.0f;
         _labelTextSize = 12;
+        _labelTextFontName = @"Helvetica";
         _unitSring = @"";
     }
     return self;
@@ -56,7 +61,7 @@
     CGPoint *basePoints, *points;
     char labelString[256];
     NSString *unitLabelString = [NSString stringWithFormat:@"[%@]", _unitSring];
-    UIFont *font = [UIFont fontWithName:@"HiraKakuProN-W3" size:_labelTextSize];
+    UIFont *font = [UIFont fontWithName:_labelTextFontName size:_labelTextSize];
     CGSize boundingSize = CGSizeMake(100, 20);
     float unitLabelWidth = [unitLabelString sizeWithFont:font constrainedToSize:boundingSize lineBreakMode:NSLineBreakByWordWrapping].width;
     if (unitLabelWidth > _labelWidth)
@@ -100,7 +105,7 @@
     // size to fit
     scaling = (rect.size.height - _paddingTop - _paddingBottom) / max * 0.9f;
     NSString *maxLabelString = [NSString stringWithFormat:@"%.0f", max];
-    font = [UIFont fontWithName:@"Helvetica" size:_labelTextSize];
+    font = [UIFont fontWithName:_labelTextFontName size:_labelTextSize];
     float maxLabelWidth = [maxLabelString sizeWithFont:font constrainedToSize:boundingSize lineBreakMode:NSLineBreakByWordWrapping].width;
     if (maxLabelWidth > _labelWidth)
         _labelWidth = maxLabelWidth;
@@ -248,7 +253,7 @@
     
     // draw max label
     CGContextSetFillColorWithColor(context, [UIColor blackColor].CGColor);
-    CGContextSelectFont(context, "Helvetica", _labelTextSize, kCGEncodingMacRoman);
+    CGContextSelectFont(context, [_labelTextFontName UTF8String], _labelTextSize, kCGEncodingMacRoman);
     CGContextSetTextDrawingMode(context, kCGTextFill);
     CGAffineTransform affine = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);
     CGContextSetTextMatrix(context, affine);

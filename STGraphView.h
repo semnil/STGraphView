@@ -46,6 +46,7 @@ typedef enum STGraphViewMode : NSInteger {
     float _paddingBottom;
     
     float _labelTextSize;
+    NSString *_labelTextFontName;
     
     NSString *_unitSring;
 }
@@ -57,6 +58,7 @@ typedef enum STGraphViewMode : NSInteger {
 @property (assign, nonatomic) float paddingRight;
 @property (assign, nonatomic) float paddingTop;
 @property (assign, nonatomic) float paddingBottom;
+@property (retain, nonatomic) NSString *labelTextFontName;
 @property (retain, nonatomic) NSString *unitSring;
 
 - (void)setPaddingWithWidth:(float)width height:(float)height;
