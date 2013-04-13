@@ -57,13 +57,13 @@
     // Drawing code
     int i, j, num;
     float value, max = 0;
-    float scaling;
+    float scaling = 1.0;
     CGPoint *basePoints, *points;
-    char labelString[256];
-    NSString *unitLabelString = [NSString stringWithFormat:@"[%@]", _unitSring];
+    NSString *labelString, *unitLabelString = [NSString stringWithFormat:@"[%@]", _unitSring];
     UIFont *font = [UIFont fontWithName:_labelTextFontName size:_labelTextSize];
     CGSize boundingSize = CGSizeMake(100, 20);
-    float unitLabelWidth = [unitLabelString sizeWithFont:font constrainedToSize:boundingSize lineBreakMode:NSLineBreakByWordWrapping].width;
+    boundingSize = [unitLabelString sizeWithFont:font constrainedToSize:boundingSize lineBreakMode:NSLineBreakByWordWrapping];
+    float unitLabelWidth = boundingSize.width;
     if (unitLabelWidth > _labelWidth)
         _labelWidth = unitLabelWidth;
 
@@ -103,7 +103,8 @@
     }
     
     // size to fit
-    scaling = (rect.size.height - _paddingTop - _paddingBottom) / max * 0.9f;
+    if (max > 0)
+        scaling = (rect.size.height - _paddingTop - _paddingBottom) / max * 0.9f;
     NSString *maxLabelString = [NSString stringWithFormat:@"%.0f", max];
     font = [UIFont fontWithName:_labelTextFontName size:_labelTextSize];
     float maxLabelWidth = [maxLabelString sizeWithFont:font constrainedToSize:boundingSize lineBreakMode:NSLineBreakByWordWrapping].width;
@@ -257,9 +258,8 @@
     CGContextSetTextDrawingMode(context, kCGTextFill);
     CGAffineTransform affine = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);
     CGContextSetTextMatrix(context, affine);
-    snprintf(labelString, sizeof(labelString) - 1, "%.0f", max);
-    CGContextShowTextAtPoint(context, rect.origin.x + rect.size.width + _paddingRight,
-                             rect.origin.y + _paddingTop + rect.size.height * 0.1, labelString, strlen(labelString));
+    labelString = [NSString stringWithFormat:@"%.0f", max];
+    [labelString drawAtPoint:CGPointMake(rect.origin.x + rect.size.width + _paddingRight, rect.origin.y + _paddingTop + boundingSize.height / 2) withFont:font];
     
     // draw unit label
     [unitLabelString drawAtPoint:CGPointMake(rect.origin.x + rect.size.width + _lineWidth * 2, _paddingTop / 2) withFont:font];
