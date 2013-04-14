@@ -133,6 +133,8 @@
 
     switch (_graphType) {
         case STGraphViewTypeLine:
+            if (max <= 0)
+                break;
             i = 0;
             num = [_delegate numberOfValueWithSource:0];
             basePoints = calloc(sizeof(CGPoint), num);
@@ -187,6 +189,8 @@
             break;
             
         case STGraphViewTypeBar:
+            if (max <= 0)
+                break;
             i = 0;
             for (NSArray *values in sources) {
                 basePoints = calloc(sizeof(CGPoint), 1);
