@@ -174,8 +174,12 @@
                 CGContextStrokePath(context);
                 
                 // reflesh base points
-                for (j = 0;j < num;j++)
-                    basePoints[j].y = points[j].y;
+                for (j = 0;j < num;j++) {
+                    if (_graphMode == STGraphViewModeNormal)
+                        basePoints[j].y = rect.origin.y + rect.size.height;
+                    else
+                        basePoints[j].y = points[j].y;
+                }
                 free(points);
                 i++;
             }
