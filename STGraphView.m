@@ -107,7 +107,8 @@
         scaling = (rect.size.height - _paddingTop - _paddingBottom) / max * 0.9f;
     NSString *maxLabelString = [NSString stringWithFormat:@"%.0f", max];
     font = [UIFont fontWithName:_labelTextFontName size:_labelTextSize];
-    float maxLabelWidth = [maxLabelString sizeWithFont:font constrainedToSize:boundingSize lineBreakMode:NSLineBreakByWordWrapping].width;
+    CGSize boundingSize2 = CGSizeMake(100, 20);
+    float maxLabelWidth = [maxLabelString sizeWithFont:font constrainedToSize:boundingSize2 lineBreakMode:NSLineBreakByWordWrapping].width;
     if (maxLabelWidth > _labelWidth)
         _labelWidth = maxLabelWidth;
 
