@@ -16,6 +16,7 @@
 @synthesize paddingRight = _paddingRight;
 @synthesize paddingTop = _paddingTop;
 @synthesize paddingBottom = _paddingBottom;
+@synthesize showAverage = _showAverage;
 @synthesize labelTextFontName = _labelTextFontName;
 @synthesize unitSring = _unitSring;
 
@@ -39,12 +40,13 @@
         _graphMode = STGraphViewModeCumulative;
         _borderWidth = 1.0f;
         _lineWidth = 2.0f;
-        _labelWidth = 30.0f;
+        _labelWidth = 32.0f;
         [self setBackgroundColor:[UIColor colorWithWhite:247/255.0 alpha:1.0]];
         _paddingLeft = 5.0f;
         _paddingRight = 5.0f;
         _paddingTop = 5.f;
         _paddingBottom = 5.0f;
+        _showAverage = NO;
         _labelTextSize = 12;
         _labelTextFontName = @"Helvetica";
         _unitSring = @"";
@@ -56,10 +58,10 @@
 {
     // Drawing code
     int i, j, num;
-    float value, max = 0;
+    float value, max = 0, ave = 0;
     float scaling = 1.0;
     CGPoint *basePoints, *points;
-    NSString *labelString, *unitLabelString = [NSString stringWithFormat:@"[%@]", _unitSring];
+    NSString *labelString, *unitLabelString = [NSString stringWithFormat:@"[%@]", _unitSring], *aveLabelString;
     UIFont *font = [UIFont fontWithName:_labelTextFontName size:_labelTextSize];
     CGSize boundingSize = CGSizeMake(100, 20);
     boundingSize = [unitLabelString sizeWithFont:font constrainedToSize:boundingSize lineBreakMode:NSLineBreakByWordWrapping];
@@ -76,6 +78,8 @@
         NSMutableArray *values = [NSMutableArray arrayWithCapacity:[_delegate numberOfValueWithSource:i]];
         value = 0;
         for (j = 0;j < [_delegate numberOfValueWithSource:i];j++) {
+            if (i == 0)
+                ave += [_delegate valueOfIndex:j withSource:i];
             if (_graphMode == STGraphViewModeCumulative || _graphMode == STGraphViewModeCumulativeAll)
                 value += [_delegate valueOfIndex:j withSource:i];   // value level cumulation
             else
@@ -84,6 +88,8 @@
             if (max < value)
                 max = value;
         }
+        if (i == 0)
+            ave /= j;
         [sources addObject:values];
     }
     if (_graphMode == STGraphViewModeCumulativeAll) {
@@ -104,13 +110,19 @@
     
     // size to fit
     if (max > 0)
-        scaling = (rect.size.height - _paddingTop - _paddingBottom) / max * 0.9f;
+        scaling = (rect.size.height - _paddingTop - _paddingBottom) / max * 0.88f;
     NSString *maxLabelString = [NSString stringWithFormat:@"%.0f", max];
     font = [UIFont fontWithName:_labelTextFontName size:_labelTextSize];
     CGSize boundingSize2 = CGSizeMake(100, 20);
     float maxLabelWidth = [maxLabelString sizeWithFont:font constrainedToSize:boundingSize2 lineBreakMode:NSLineBreakByWordWrapping].width;
     if (maxLabelWidth > _labelWidth)
         _labelWidth = maxLabelWidth;
+    
+    aveLabelString = [NSString stringWithFormat:@"(%@)", NSLocalizedString(@"Ave", @"Average")];
+    CGSize boundingSize3 = CGSizeMake(100, 20);
+    float aveLabelWidth = [aveLabelString sizeWithFont:font constrainedToSize:boundingSize3 lineBreakMode:NSLineBreakByWordWrapping].width;
+    if (aveLabelWidth > _labelWidth)
+        _labelWidth = aveLabelWidth;
 
     // draw
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -261,14 +273,30 @@
     CGContextAddLineToPoint(context, rect.origin.x + rect.size.width, rect.origin.y);
     CGContextStrokePath(context);
     
-    // draw max label
+    if (_showAverage) {
+        // draw average line
+        CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 0.25);
+        CGContextMoveToPoint(context, rect.origin.x - _borderWidth * 2, rect.origin.y - _lineWidth / 2 + rect.size.height - rect.size.height * (ave / max) * 0.88f);
+        CGContextAddLineToPoint(context, rect.origin.x + rect.size.width + _borderWidth * 2, rect.origin.y - _lineWidth / 2 + rect.size.height - rect.size.height * (ave / max) * 0.88f);
+        CGContextStrokePath(context);
+    }
+    
     CGContextSetFillColorWithColor(context, [UIColor blackColor].CGColor);
     CGContextSelectFont(context, [_labelTextFontName UTF8String], _labelTextSize, kCGEncodingMacRoman);
     CGContextSetTextDrawingMode(context, kCGTextFill);
     CGAffineTransform affine = CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0);
     CGContextSetTextMatrix(context, affine);
+    
+    if (_showAverage) {
+        // draw average label
+        labelString = [NSString stringWithFormat:@"%.0f", ave];
+        [labelString drawAtPoint:CGPointMake(rect.origin.x + rect.size.width + _paddingRight, rect.origin.y + rect.size.height - boundingSize.height / 2.5 - rect.size.height * (ave / max) * 0.88f) withFont:font];
+        [aveLabelString drawAtPoint:CGPointMake(rect.origin.x + rect.size.width + _paddingRight, rect.origin.y + rect.size.height - boundingSize.height / 2.5 - rect.size.height * (ave / max) * 0.88f + boundingSize.height * 0.6) withFont:font];
+    }
+    
+    // draw max label
     labelString = [NSString stringWithFormat:@"%.0f", max];
-    [labelString drawAtPoint:CGPointMake(rect.origin.x + rect.size.width + _paddingRight, rect.origin.y + _paddingTop + boundingSize.height / 2) withFont:font];
+    [labelString drawAtPoint:CGPointMake(rect.origin.x + rect.size.width + _paddingRight, rect.origin.y + rect.size.height - boundingSize.height / 2.5 - rect.size.height * 0.88f) withFont:font];
     
     // draw unit label
     [unitLabelString drawAtPoint:CGPointMake(rect.origin.x + rect.size.width + _lineWidth * 2, _paddingTop / 2) withFont:font];
