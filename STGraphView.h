@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-typedef enum STGraphViewType : NSInteger {
+typedef enum {
     STGraphViewTypeLine,
     STGraphViewTypeBar,
     STGraphViewTypePie
 } STGraphViewType;
 
-typedef enum STGraphViewMode : NSInteger {
+typedef enum {
     STGraphViewModeNormal,
     STGraphViewModeCumulative,      // value level cumulation
     STGraphViewModeCumulativeAll    // source level cumulation
