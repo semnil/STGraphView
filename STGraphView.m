@@ -150,6 +150,9 @@
                 break;
             i = 0;
             num = [_delegate numberOfValueWithSource:0];
+            if (num == 1) {
+                num = 2;
+            }
             basePoints = calloc(sizeof(CGPoint), num);
             for (j = 0;j < num;j++) {
                 basePoints[j].x = rect.origin.x + rect.size.width / (num - 1) * j;
@@ -159,7 +162,8 @@
                 CGContextMoveToPoint(context, rect.origin.x, basePoints[0].y);
                 points = calloc(sizeof(CGPoint), num);
                 for (j = 0;j < num;j++) {
-                    value = [[values objectAtIndex:j] intValue];
+                    if ([values count] > j)
+                        value = [[values objectAtIndex:j] intValue];
                     
                     points[j].x = basePoints[j].x;
                     if (j == 0)
