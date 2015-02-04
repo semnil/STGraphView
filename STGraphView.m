@@ -57,7 +57,7 @@
 - (void)drawRect:(CGRect)rect
 {
     // Drawing code
-    int i, j, num;
+    long i, j, num;
     float value, max = 0, ave = 0;
     float scaling = 1.0;
     CGPoint *basePoints, *points;
@@ -174,7 +174,7 @@
                     CGContextAddLineToPoint(context, points[j].x, points[j].y);
                 }
                 // fill rect
-                for (j = num - 1;j >= 0;j--)
+                for (j = (int)num - 1;j >= 0;j--)
                     CGContextAddLineToPoint(context, basePoints[j].x, basePoints[j].y);
                 CGContextClosePath(context);
                 CGContextSetFillColorWithColor(context, [_delegate fillColorOfValueWithSource:i].CGColor);

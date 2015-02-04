@@ -22,11 +22,11 @@ typedef enum {
 
 @protocol STGraphViewDelegate
 @required
-- (int)numberOfSource;
-- (int)numberOfValueWithSource:(int)source;
-- (float)valueOfIndex:(int)index withSource:(int)source;
-- (UIColor *)lineColorOfValueWithSource:(int)source;
-- (UIColor *)fillColorOfValueWithSource:(int)source;
+- (long)numberOfSource;
+- (long)numberOfValueWithSource:(long)source;
+- (float)valueOfIndex:(long)index withSource:(long)source;
+- (UIColor *)lineColorOfValueWithSource:(long)source;
+- (UIColor *)fillColorOfValueWithSource:(long)source;
 @optional
 @end
 
