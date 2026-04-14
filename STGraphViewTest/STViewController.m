@@ -79,7 +79,7 @@
                     [NSNumber numberWithInteger:3],
                     nil];
 
-    STGraphView *graphView = [[[STGraphView alloc] initWithFrame:CGRectMake(0, 50, 320, 250)] autorelease];
+    STGraphView *graphView = [[STGraphView alloc] initWithFrame:CGRectMake(0, 50, 320, 250)];
     [graphView setDelegate:self];
     // for line graph
     [graphView setGraphMode:STGraphViewModeCumulativeAll];
@@ -95,15 +95,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-- (void)dealloc
-{
-    if (_graphValues != nil)
-        [_graphValues release];
-
-    [super dealloc];
-}
-
 #pragma mark - STGraphView delegate
 
 - (int)numberOfSource

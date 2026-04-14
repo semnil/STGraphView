@@ -32,7 +32,7 @@ typedef enum {
 
 @interface STGraphView : UIView
 {
-    id _delegate;
+    __weak id _delegate;
     int _graphType;
     int _graphMode;
     float _borderWidth;
@@ -53,7 +53,7 @@ typedef enum {
     NSString *_unitSring;
 }
 
-@property (assign, nonatomic) id <STGraphViewDelegate>delegate;
+@property (weak, nonatomic) id <STGraphViewDelegate>delegate;
 @property (assign, nonatomic) int graphType;
 @property (assign, nonatomic) int graphMode;
 @property (assign, nonatomic) float paddingLeft;
@@ -61,8 +61,8 @@ typedef enum {
 @property (assign, nonatomic) float paddingTop;
 @property (assign, nonatomic) float paddingBottom;
 @property (assign, nonatomic) bool showAverage;
-@property (retain, nonatomic) NSString *labelTextFontName;
-@property (retain, nonatomic) NSString *unitSring;
+@property (strong, nonatomic) NSString *labelTextFontName;
+@property (strong, nonatomic) NSString *unitSring;
 
 - (void)setPaddingWithWidth:(float)width height:(float)height;
 

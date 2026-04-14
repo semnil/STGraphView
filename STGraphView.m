@@ -9,27 +9,6 @@
 #import "STGraphView.h"
 
 @implementation STGraphView
-@synthesize delegate = _delegate;
-@synthesize graphType = _graphType;
-@synthesize graphMode = _graphMode;
-@synthesize paddingLeft = _paddingLeft;
-@synthesize paddingRight = _paddingRight;
-@synthesize paddingTop = _paddingTop;
-@synthesize paddingBottom = _paddingBottom;
-@synthesize showAverage = _showAverage;
-@synthesize labelTextFontName = _labelTextFontName;
-@synthesize unitSring = _unitSring;
-
-- (void)dealloc
-{
-    if (_labelTextFontName)
-        [_labelTextFontName release];
-    _labelTextFontName = nil;
-    if (_unitSring)
-        [_unitSring release];
-    _unitSring = nil;
-    [super dealloc];
-}
 
 - (id)initWithFrame:(CGRect)frame
 {
